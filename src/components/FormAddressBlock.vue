@@ -3,7 +3,7 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" placeholder="demo" v-model="inputAddress"
                 @keyup="fetchData" @input="addressDropDown = !addressDropDown"/>
-            <ul class="list-group" v-show="addressDropDown">
+            <ul class="list-group" v-if="addressDropDown">
                 <li v-for="(a, index) in addressData" :key="a"><a class="list-group-item" @click="(select(index, a), addressDropDown=!addressDropDown)">{{ a
                 }}</a></li>
 
@@ -24,7 +24,7 @@ export default {
 
             inputAddress: "",
             addressData: [],
-            addressDropDown: true
+            addressDropDown: false
         
 
         }
@@ -51,9 +51,9 @@ export default {
 
         },
 
-        updateValue: function (value) {
-            this.$emit("input", value);
-        },
+        // updateValue: function (value) {
+        //     this.$emit("input", value);
+        // },
 
         select: function(index, a) {
             this.inputAddress = this.addressData[index]
