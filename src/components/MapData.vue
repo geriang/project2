@@ -1,5 +1,10 @@
 <template>
 
+<!-- building -->
+<!-- postal code -->
+<!-- district -->
+<!-- block -->
+<!-- road name -->
 
 </template>
 

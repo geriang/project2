@@ -2,8 +2,11 @@
     <div>
         <div class="container-fluid m-1 p-1">
             <h1>Basic Details</h1>
+            <!-- No. of room does not hide when switched back to commercial -->
+            <!-- Property form does not update full address data when there are changes in address -->
             <FormBlockDrop :title="formBlockTitle1" v-model="listingTypeValue" :dropDownValues="formBlockArray1" />
-            <FormAddressBlock :title="formBlockTitle2" v-model="addressValue" @update="getAddress" />
+            <FormAddressBlock :title="formBlockTitle2" v-model="addressValue" @updateAddressValue="getAddress"
+                @updateFullAddressData="getFullAddressData" />
             <FormBlockDrop :title="formBlockTitle3" v-model="propertyTypeValue" :dropDownValues="formBlockArray3" />
             <FormSubTypeBlock :title="formBlockTitle4" v-model="propertySubTypeValue"
                 :selectedPropertyType="this.propertyTypeValue" @updateSubTypeValue="getSubType"
@@ -26,8 +29,9 @@ import FormAddressBlock from "@/components/FormAddressBlock.vue"
 import FormSubTypeBlock from "@/components/FormSubTypeBlock.vue"
 import axios from "axios"
 
-const API_URL = "http://localhost:5000/listing_details/create/"
+const postListingApiUrl = "http://localhost:5000/listing_details/create/"
 const END_URL = "63ef83e27aad1cd42e13dd96/63ef8627383836ca595b4e07"
+const postPropertyApiUrl = "http://localhost:5000/property_details/create"
 
 
 
@@ -46,9 +50,8 @@ export default {
             formBlockTitle7: "Land Area (sqft)",
             formBlockTitle8: "Price (SGD)",
             formBlockTitle9: "Headline",
-            // listingValue: "",
             addressValue: "",
-            // postalCodeValue: "",
+            fullAddressData: {},
             listingTypeValue: "",
             propertyTypeValue: "",
             propertySubTypeValue: "",
@@ -60,19 +63,18 @@ export default {
             headLineValue: "",
             formBlockArray1: [" ", "For Sale", "For Rent", "Room Rental"],
             formBlockArray3: [" ", "HDB", "Condo", "Landed", "Retail", "Office", "Industrial", "Land"],
-            // formBlockArray4: [" ", "1-Room / Studio", "2I (Improved)", "2S (Standard)", "2A", "3A", "3NG (New Generation)", "3A (Modified)", "3NG (Modified)", "3I (Improved)", "3S (Simplified)", "3STD (Standard)", "4A", "4NG (New Generation)", "4PA (4 Room Premium Apartment)", "4S (Simplified)", "4I (Improved)", "4STD (Standard)", "5A", "5I", "5PA (5 Room Premium Apartment)", "5S", "Jumbo", "EA (Exec Apartment)", "EM (Exec Maisonette)", "MG (Multi-Generation)", "Terrace"],
-            // formBlockArray5: [" ", "Apartment", "Cluster House", "Condominium", "Executive Condominium", "Walk-up"],
-            // formBlockArray6: [" ", "Good Class Bungalow", "Conservation House", "Corner Terrace", "Detached House", "Bungalow House", "Cluster House", "Land Only", "Semi-Detached House", "Shophouse", "Terrace House", "Town House"],
-            // formBlockArray7: [" ", "Food & Beverage", "Mall Shop", "Medical", "Other Retail", "Shop / Shophouse"],
-            // formBlockArray8: [" ", "Business / Science Park", "Office"],
-            // formBlockArray9: [" ", "Dormitory", "Factory / Workshop (B2)", "Light Industrial (B1)", "Warehouse"],
-            // formBlockArray10: [" ", "Land with Building / En-bloc", "Land Only"]
+
         }
     },
     methods: {
 
         getAddress: function (selectedAddress) {
             this.addressValue = selectedAddress
+
+        },
+
+        getFullAddressData: function (fullAddressData) {
+            this.fullAddressData = fullAddressData
 
         },
 
@@ -87,7 +89,7 @@ export default {
 
         postData: async function () {
 
-            let data = {
+            let listingData = {
                 "listingType": {
                     "type": this.propertyTypeValue,
                     "subType": this.propertySubTypeValue,
@@ -115,8 +117,36 @@ export default {
                 }
             }
 
-            let postResponse = await axios.post(API_URL + END_URL, data)
-            console.log(postResponse.data)
+            let propertyData = {
+// remove property type and subtype?
+                "address": {
+                    "country": "Singapore",
+                    "postalCode": this.fullAddressData.postalCode,
+                    "streetName": this.fullAddressData.roadName,
+                    "block": this.fullAddressData.block,
+                    "unit": "units",
+                    "project": this.fullAddressData.building
+                },
+                "district": this.fullAddressData.district,
+                "propertyType": {
+                    "type": this.propertyTypeValue,
+                    "subType": this.propertySubTypeValue,
+                },
+                "tenure": "99 Year",
+                "top": "2000",
+                "coordinates": this.fullAddressData.coordinates
+
+
+
+
+            }
+
+
+            let postListingResponse = await axios.post(postListingApiUrl + END_URL, listingData)
+            console.log(postListingResponse.data)
+
+            let postPropertyResponse = await axios.post(postPropertyApiUrl, propertyData)
+            console.log(postPropertyResponse)
 
         }
 
