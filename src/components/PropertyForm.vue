@@ -2,8 +2,9 @@
     <div>
         <div class="container-fluid m-1 p-1">
             <h1>Basic Details</h1>
-            <!-- No. of room does not hide when switched back to commercial -->
+    
             <!-- Property form does not update full address data when there are changes in address -->
+            <!-- how to ensure that any changes made to address after selection can be captured in the propertyform -->
             <FormBlockDrop :title="formBlockTitle1" v-model="listingTypeValue" :dropDownValues="formBlockArray1" />
             <FormAddressBlock :title="formBlockTitle2" v-model="addressValue" @updateAddressValue="getAddress"
                 @updateFullAddressData="getFullAddressData" />

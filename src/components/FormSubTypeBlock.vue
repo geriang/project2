@@ -1,16 +1,18 @@
 <template>
     <div>
-        <div class="form-floating mb-3" @click="showSubTypeDropDown = !showSubTypeDropDown">
-            <input type="text" class="form-control" id="floatingInput" placeholder="demo" v-model="searchQuery" />
-            <ul class="list-group" v-show="showSubTypeDropDown">
-                <li v-for="(d, index) in filteredData" :key="d" @click="(select(d, index), showSubTypeDropDown = !showSubTypeDropDown)"><a
-                        class="list-group-item">{{ d
-                        }}</a></li>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="demo" v-model="searchQuery"
+                @click="showSubTypeDropDown = !showSubTypeDropDown" />
+            <ul class="list-group" v-if="showSubTypeDropDown">
+                <li v-for="(d, index) in filteredData" :key="d"
+                    @click="(select(d, index), showSubTypeDropDown = !showSubTypeDropDown)"><a class="list-group-item">{{ d
+                    }}</a></li>
             </ul>
             <label for="floatingInput">{{ this.title }}</label>
 
         </div>
-         <FormBlockDrop v-show ="showRoomDropDown" :title="formBlockTitle1" v-model="noOfRoom" :dropDownValues="noOfRooms" @input="updateRoomValue" />
+        <FormBlockDrop v-if="showRoomDropDown" :title="formBlockTitle1" v-model="noOfRoom" :dropDownValues="noOfRooms"
+            @input="updateRoomValue" />
     </div>
 </template>
 
@@ -19,7 +21,7 @@ import FormBlockDrop from "@/components/FormBlockDrop.vue"
 
 export default {
 
-    components: {FormBlockDrop},
+    components: { FormBlockDrop },
 
     data: function () {
         return {
@@ -54,9 +56,8 @@ export default {
 
         updateRoomValue: function (noOfRoom) {
             this.$emit("updateRoomNoValue", noOfRoom)
-    
-        }
 
+        }
 
 
     },
@@ -65,19 +66,18 @@ export default {
         filteredData: function () {
 
             // return this.updateData(this.searchResult)       
-            let searchResult = this.data
-                .map((index, d) => ({ d, index })) // add index to each item
-                .filter(d => this.searchQueryRegex.test(d.index)) // filter by index
-                .map(d => d.index); // return array of indexes only
+            // let searchResult = this.data
+            return this.data.filter(d => d.toLowerCase().includes(this.searchQuery.toLowerCase()))
+            // .map((index, d) => ({ d, index })) // add index to each item
+            // .filter(d => this.searchQueryRegex.test(d.index)) // filter by index
+            // .map(d => d.index); // return array of indexes only
 
-            return searchResult
+            // return searchResult
 
             // return this.data
             // .map((d,index) => ({d,index}))
             // .filter(d => this.searchQuery.toLowerCase(d.index))
 
-
-            // return this.data.filter(d => d.toLowerCase().includes(this.searchQuery.toLowerCase()))
 
             // let filtered = this.data.map((d, index) => ({ index }))
             //     .filter((d) => {
@@ -92,24 +92,33 @@ export default {
             //     .map(d => d.index); // return array of indexes only
 
         },
-        searchQueryRegex() {
-            return new RegExp(this.searchQuery, 'i'); // create regular expression for search query
-        }
+        // searchQueryRegex() {
+        //     return new RegExp(this.searchQuery, 'i'); // create regular expression for search query
+        // }
 
     },
     watch: {
         selectedPropertyType: function () {
+            this.searchQuery = ""
+            this.data = []
+            this.noOfRoom = this.noOfRooms[0]
+            this.showRoomDropDown = false
             this.data = this.subType[this.selectedPropertyType]
-            if (this.selectedPropertyType === "HDB" || this.selectedPropertyType === "Condo" || this.selectedPropertyType === "Landed"){
-                this.showRoomDropDown = !this.showRoomDropDown
+            if (this.selectedPropertyType === "HDB" || this.selectedPropertyType === "Condo" || this.selectedPropertyType === "Landed") {
+                this.showRoomDropDown = true
+            } else {
+                this.showRoomDropDown = false
+                this.updateRoomValue()
+
+
             }
 
         }
-       
-        }
+
+    }
 
 
-    
+
 
 }
 

@@ -5,6 +5,7 @@
 <!-- https://vuejs.org/guide/essentials/watchers.html#basic-example -->
 <!-- https://stackoverflow.com/questions/68992586/how-to-search-through-the-keys-of-an-object-and-get-the-values-of-matching-keys -->
 <!-- https://www.w3schools.com/jsref/jsref_substring.asp -->
+<!-- https://vue2-leaflet.netlify.app/quickstart/#hello-map -->
 <template>
   <div>
     <nav class="navbar bg-light fixed-top">
