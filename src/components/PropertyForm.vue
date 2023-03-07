@@ -2,7 +2,7 @@
     <div>
         <div class="container-fluid m-1 p-1">
             <h1>Basic Details</h1>
-    
+
             <!-- Property form does not update full address data when there are changes in address -->
             <!-- how to ensure that any changes made to address after selection can be captured in the propertyform -->
             <FormBlockDrop :title="formBlockTitle1" v-model="listingTypeValue" :dropDownValues="formBlockArray1" />
@@ -31,7 +31,7 @@ import FormSubTypeBlock from "@/components/FormSubTypeBlock.vue"
 import axios from "axios"
 
 const postListingApiUrl = "http://localhost:5000/listing_details/create/"
-const END_URL = "63ef83e27aad1cd42e13dd96/63ef8627383836ca595b4e07"
+// const END_URL = "63ef83e27aad1cd42e13dd96/63ef8627383836ca595b4e07"
 const postPropertyApiUrl = "http://localhost:5000/property_details/create"
 
 
@@ -88,12 +88,17 @@ export default {
 
         },
 
-        postData: async function () {
+        postData: async function(){
+            const getListingId = await this.postListing()
+            await this.postProperty(getListingId)
+        },
+
+        postListing: async function () {
 
             let listingData = {
                 "listingType": {
-                    "type": this.propertyTypeValue,
-                    "subType": this.propertySubTypeValue,
+                    "type": this.listingTypeValue,
+                    "subType": "",
                     "term": "Vacant Possession"
                 },
                 "price": {
@@ -116,10 +121,20 @@ export default {
                     "photo": "photo",
                     "video": "video"
                 }
+
             }
 
+            let postListingResponse = await axios.post(postListingApiUrl, listingData)
+            let getListingId = postListingResponse.data.id
+            console.log(getListingId)
+            return getListingId
+
+        },
+
+        postProperty: async function (getListingId) {
+            console.log(getListingId)
             let propertyData = {
-// remove property type and subtype?
+
                 "address": {
                     "country": "Singapore",
                     "postalCode": this.fullAddressData.postalCode,
@@ -133,21 +148,18 @@ export default {
                     "type": this.propertyTypeValue,
                     "subType": this.propertySubTypeValue,
                 },
-                "tenure": "99 Year",
-                "top": "2000",
-                "coordinates": this.fullAddressData.coordinates
-
-
-
+                "tenure": "",
+                "top": "",
+                "coordinates": this.fullAddressData.coordinates,
+                "listing_details": [
+                    {"lid" : getListingId}
+                ]
 
             }
 
-
-            let postListingResponse = await axios.post(postListingApiUrl + END_URL, listingData)
-            console.log(postListingResponse.data)
-
             let postPropertyResponse = await axios.post(postPropertyApiUrl, propertyData)
             console.log(postPropertyResponse)
+            // console.log(getListingId)
 
         }
 

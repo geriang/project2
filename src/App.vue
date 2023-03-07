@@ -6,6 +6,7 @@
 <!-- https://stackoverflow.com/questions/68992586/how-to-search-through-the-keys-of-an-object-and-get-the-values-of-matching-keys -->
 <!-- https://www.w3schools.com/jsref/jsref_substring.asp -->
 <!-- https://vue2-leaflet.netlify.app/quickstart/#hello-map -->
+<!-- <a href="https://www.flaticon.com/free-icons/park" title="park icons">Park icons created by ono_tono - Flaticon</a> -->
 <template>
   <div>
     <nav class="navbar bg-light fixed-top">
@@ -56,7 +57,7 @@
     </nav>
 
     <h1>Hello World</h1>
-    <MapPage v-show="showMap" />
+    <MapPage v-show="showMap" :key="mapComponentKey"/>
     <PropertyForm v-show="showPropertyForm" />
 
   </div>
@@ -73,6 +74,7 @@ export default {
     return {
       showPropertyForm: false,
       showMap: true,
+      mapComponentKey: 0,
 
     }
 
@@ -89,8 +91,14 @@ export default {
     displayMap: function(){
       this.showMap = true
       this.showPropertyForm = false
+      this.refreshMap()
  
+    },
+
+    refreshMap : function(){
+      this.mapComponentKey += 1;
     }
+
 
 
   }

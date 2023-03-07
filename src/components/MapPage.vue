@@ -1,17 +1,12 @@
 <template>
     <div>
 
-
-        <div id="map">
-
-            <MapModal/>
-
-            <!-- <MapModal :district="this.propertyData.district" :address="this.propertyData.address.streetName"/> -->
+        <div id="map"></div>
 
             <!-- Modal -->
             <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                 aria-labelledby="staticBackdropLabel" aria-hidden="true" ref="propertyModal">
-                <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Listing Details</h1>
@@ -19,45 +14,55 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <div class="row">
 
-                                    <div class="col-md-4">District {{ this.selectedDistrict }}</div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>
+                                            District {{ selectedDistrict }}</h5>
+                                        <div class="col-sm-12">
+                                            <h6>
+                                                {{ selectedAddress }}</h6>
 
+                                            <div class="row justify-content-center">
 
-                                    <div class="col-md-4">Address {{ this.selectedAddress }}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3 ms-auto">.col-md-3 .ms-auto</div>
-                                    <div class="col-md-2 ms-auto">.col-md-2 .ms-auto</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 ms-auto">.col-md-6 .ms-auto</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        Level 1: .col-sm-9
-                                        <div class="row">
-                                            <div class="col-8 col-sm-6">
-                                                Level 2: .col-8 .col-sm-6
+                                                <img class="photo" v-for="i in image" :key="i" :src=i alt="Image">
+
                                             </div>
-                                            <div class="col-4 col-sm-6">
-                                                Level 2: .col-4 .col-sm-6
-                                            </div>
+
                                         </div>
+
                                     </div>
                                 </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <h1>wagweaogeramhpoearkhopkoijuinknaekmrgooaepr<br>
+                                            oapmpohaerhkopaer<br>
+                                            oaekgopeakearh<br>
+                                            aeophraepohaeraerh<br>
+                                        </h1>
+
+                                    </div>
+                                    <div class="col-sm-6">
+
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Understood</button> -->
-                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Understood</button>
+                        </div> -->
                     </div>
                 </div>
             </div>
 
 
-        </div>
+        
 
 
     </div>
@@ -66,19 +71,18 @@
 <script>
 import L from "leaflet";
 import 'leaflet.markercluster';
-import HomeMarker from "@/assets/HomeMarker.png"
+import resiMarker from "@/assets/resiMarker.png"
+import commMarker from "@/assets/commMarker.png"
+import indMarker from "@/assets/indMarker.png"
 import axios from "axios";
 import * as bootstrap from 'bootstrap';
-import MapModal from "@/components/MapModal.vue";
-
-
 
 
 const getDataApiUrl = "http://localhost:5000/property_details"
 
 
 export default {
-    components: {MapModal},
+    components: {},
 
     data: function () {
         return {
@@ -86,25 +90,24 @@ export default {
             propertyData: {},
             selectedAddress: null,
             selectedDistrict: null,
-    
-          
+            image: ["https://sgp.sg/wp-content/uploads/2022/12/IMG_20221216_120530_594.jpg", "https://sgp.sg/wp-content/uploads/2022/10/Screenshot_20221006_170423_edit_14248157671783.jpg", "https://sgp.sg/wp-content/uploads/2022/10/Screenshot_20221006_170646_edit_14217361546267.jpg", "https://sgp.sg/wp-content/uploads/2022/09/IMG20220929183423-1.jpg"]
+
+
         }
     },
     async created() {
 
-        // let coordinates = []
         let propertyDetails = []
         let response = await axios.get(getDataApiUrl)
         let data = response.data
         for (let d of data) {
-            // let propertyCoordinates = d.coordinates
-            // coordinates.push(propertyCoordinates)
 
             let propertyDetail = d
             propertyDetails.push(propertyDetail)
         }
-        // this.coordinatesData = coordinates
+
         this.propertyData = propertyDetails
+        
 
 
         await this.createMap()
@@ -128,39 +131,55 @@ export default {
 
 
             const markerClusterGroup = L.markerClusterGroup()
-            const markerIcon = L.icon({
-                iconUrl: HomeMarker,
+            const resiIcon = L.icon({
+                iconUrl: resiMarker,
                 iconSize: [40, 40],
                 iconAnchor: [20, 40],
-            });
 
+            
+            });
+            const commIcon = L.icon({
+                iconUrl: commMarker,
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+
+            
+            });
+            const indIcon = L.icon({
+                iconUrl: indMarker,
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+
+            
+            });
 
 
             this.propertyData.forEach((propData) => {
                 let coordinate = propData.coordinates
                 let address = propData.address.streetName
                 let district = propData.district
-                console.log(address)
-                L.marker(coordinate, { icon: markerIcon })
+                let propertyType = propData.propertyType.type
+
+                if (propertyType === "HDB" || propertyType === "Condo" || propertyType === "Landed"){
+                L.marker(coordinate, { icon: resiIcon })
                     .bindPopup(() => { this.onModal(address, district) }).addTo(markerClusterGroup)
+                }else if(propertyType ==="Office" || propertyType === "Retail"|| propertyType ==="Land"){
+                    L.marker(coordinate, { icon: commIcon })
+                    .bindPopup(() => { this.onModal(address, district) }).addTo(markerClusterGroup)
+
+                }else{
+                    L.marker(coordinate, { icon: indIcon })
+                    .bindPopup(() => { this.onModal(address, district) }).addTo(markerClusterGroup)
+                }
+
             })
-
-            // onEachFeature: (feature, layer) => {
-            // layer.on('click', () => {
-            //     this.selectedFeature = feature.properties
-                
-            // })
-        
-
-
 
             markerClusterGroup.addTo(this.map)
 
 
-
         },
 
-     
+
 
 
 
@@ -170,10 +189,10 @@ export default {
             this.selectedAddress = address
             this.selectedDistrict = district
 
-            new bootstrap.Modal(this.modal,(address,district)).show();
+            new bootstrap.Modal(this.modal, (address, district)).show();
             console.log(address)
             console.log(district)
-           
+
         },
 
 
@@ -199,13 +218,13 @@ export default {
     height: 100vh;
 }
 
-#modalPop {
-    z-index: 1500;
 
+.photo {
+    width: 320px;
+    max-width: 100%;
+    height: 240px;
+    padding: 2px;
+    border: 1px solid white;
 
-}
-
-#button {
-    z-index: 50000;
 }
 </style>
