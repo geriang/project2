@@ -7,58 +7,27 @@
 <!-- https://www.w3schools.com/jsref/jsref_substring.asp -->
 <!-- https://vue2-leaflet.netlify.app/quickstart/#hello-map -->
 <!-- <a href="https://www.flaticon.com/free-icons/park" title="park icons">Park icons created by ono_tono - Flaticon</a> -->
+<!-- https://stackoverflow.com/questions/41518609/clearing-input-in-vuejs-form -->
 <template>
   <div>
-    <nav class="navbar bg-light fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">SGxProperty</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-          aria-controls="offcanvasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-dismiss="offcanvas" @click="displayPropertyForm">Listing Submission</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-dismiss="offcanvas" @click="displayMap">Map</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-            </ul>
-            <form class="d-flex mt-3" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </nav>
+  
+    <div class="mb-3">
+      <NavBar @showNavBarMap="displayMap" @showNavBarPropertyForm="displayPropertyForm"
+        @showNavBarEditListing="displayEditListing" />
+    </div>
 
-    <h1>Hello World</h1>
-    <MapPage v-show="showMap" :key="mapComponentKey"/>
-    <PropertyForm v-show="showPropertyForm" />
+    <div class="position-relative mt-5">
+
+      <MapPage v-if="showMap" :key="mapComponentKey" />
+      <PropertyForm v-if="showPropertyForm" />
+      <EditListingForm v-if="showEditPage" />
+
+    </div>
+
+
+
+
+
 
   </div>
 </template>
@@ -66,14 +35,17 @@
 <script>
 import PropertyForm from "@/components/PropertyForm.vue"
 import MapPage from "@/components/MapPage.vue"
+import EditListingForm from "@/components/EditListingForm.vue"
+import NavBar from "@/components/NavBar.vue"
 
 export default {
   name: 'App',
-  components: { PropertyForm, MapPage },
+  components: { PropertyForm, MapPage, EditListingForm, NavBar },
   data: function () {
     return {
       showPropertyForm: false,
       showMap: true,
+      showEditPage: false,
       mapComponentKey: 0,
 
     }
@@ -82,20 +54,29 @@ export default {
 
   methods: {
 
-    displayPropertyForm: function(){
-      this.showPropertyForm = true
+    displayPropertyForm: function (value) {
+      this.showPropertyForm = value
+      this.showEditPage = false
       this.showMap = false
-   
+
     },
 
-    displayMap: function(){
-      this.showMap = true
+    displayMap: function (value) {
+      this.showMap = value
       this.showPropertyForm = false
+      this.showEditPage = false
       this.refreshMap()
- 
+
     },
 
-    refreshMap : function(){
+    displayEditListing: function (value) {
+      console.log("received")
+      this.showEditPage = value
+      this.showMap = false
+      this.showPropertyForm = false
+    },
+
+    refreshMap: function () {
       this.mapComponentKey += 1;
     }
 

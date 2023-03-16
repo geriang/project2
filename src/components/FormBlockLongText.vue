@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="form-floating mb-3">
+        <div class="form-floating">
             <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" @input="updateValue($event.target.value)"></textarea>
             <label for="floatingTextarea">{{ this.title }}</label>
         </div>
