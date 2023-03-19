@@ -59,7 +59,7 @@ export default {
             formBlockTitle1: "Listing Type",
             formBlockTitle2: "Address",
             formBlockTitle3: "Property Type",
-            formBlockTitle4: "Sub Type",
+            formBlockTitle4: "Sub-type",
             formBlockTitle5: "Description",
             formBlockTitle6: "Built-in Area (sqft)",
             formBlockTitle7: "Land Area (sqft)",
@@ -166,7 +166,9 @@ export default {
                 "media": {
                     "photo": "photo",
                     "video": "video"
-                }
+                },
+                "unit": "",
+                "rooms": this.roomNoValue
 
             }
 
@@ -185,7 +187,6 @@ export default {
                     "postalCode": this.fullAddressData.postalCode,
                     "streetName": this.fullAddressData.roadName,
                     "block": this.fullAddressData.block,
-                    "unit": "units",
                     "project": this.fullAddressData.building
                 },
                 "district": this.fullAddressData.district,
@@ -194,6 +195,7 @@ export default {
                     "subType": this.propertySubTypeValue,
                 },
                 "tenure": "",
+                "wef" : "",
                 "top": "",
                 "coordinates": this.fullAddressData.coordinates,
                 "listingDetails": [

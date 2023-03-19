@@ -70,7 +70,6 @@ export default {
     },
 
     displayEditListing: function (value) {
-      console.log("received")
       this.showEditPage = value
       this.showMap = false
       this.showPropertyForm = false

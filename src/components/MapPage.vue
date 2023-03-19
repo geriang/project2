@@ -242,6 +242,7 @@ export default {
     data: function () {
         return {
             map: null,
+            // modal:null,
             propertyData: {},
             selectedDistrict: null,
             selectedProject: null,

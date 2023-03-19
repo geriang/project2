@@ -11,22 +11,19 @@
             <label for="floatingInput">{{ this.title }}</label>
 
         </div>
-        <FormBlockDrop v-if="showRoomDropDown" :title="formBlockTitle1" v-model="noOfRoom" :dropDownValues="noOfRooms"
-            @input="updateRoomValue" />
     </div>
 </template>
 
 <script>
-import FormBlockDrop from "@/components/FormBlockDrop.vue"
 
 export default {
 
-    components: { FormBlockDrop },
+    components: { },
 
     data: function () {
         return {
             showSubTypeDropDown: false,
-            showRoomDropDown: false,
+        
             data: [],
             searchQuery: "",
             subType: {
@@ -38,9 +35,7 @@ export default {
                 Industrial: ["Dormitory", "Factory / Workshop (B2)", "Light Industrial (B1)", "Warehouse"],
                 Land: ["Land with Building / En-bloc", "Land Only"]
             },
-            noOfRooms: [" ", "Studio", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            formBlockTitle1: "No of Rooms",
-            noOfRoom: ""
+       
 
         }
 
@@ -54,10 +49,6 @@ export default {
             this.$emit("updateSubTypeValue", d)
         },
 
-        updateRoomValue: function (noOfRoom) {
-            this.$emit("updateRoomNoValue", noOfRoom)
-
-        }
 
 
     },
@@ -101,17 +92,9 @@ export default {
         selectedPropertyType: function () {
             this.searchQuery = ""
             this.data = []
-            this.noOfRoom = this.noOfRooms[0]
-            this.showRoomDropDown = false
+       
             this.data = this.subType[this.selectedPropertyType]
-            if (this.selectedPropertyType === "HDB" || this.selectedPropertyType === "Condo" || this.selectedPropertyType === "Landed") {
-                this.showRoomDropDown = true
-            } else {
-                this.showRoomDropDown = false
-                this.updateRoomValue()
-
-
-            }
+  
 
         },
         passedValue: function(newValue) {

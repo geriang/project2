@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" placeholder="demo" v-model="value" @input="updateValue($event.target.value)">
+            <input type="text" class="form-control" id="floatingInput" placeholder="demo" @input="updateValue($event.target.value)">
             <label for="floatingInput">{{this.title}}</label>
         </div>
     </div>
@@ -11,7 +11,7 @@
 
 
 export default{
-    props: ["title", "passedValue"],
+    props: ["title"],
     methods: {
         updateValue(value){
             this.$emit("input", value);
@@ -19,13 +19,7 @@ export default{
     },
     data: function(){
         return{
-            value:""
            
-        }
-    },
-    watch: {
-        passedValue: function(newValue){
-            this.value = newValue
         }
     }
 }

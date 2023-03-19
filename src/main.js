@@ -5,7 +5,12 @@ import "bootstrap/dist/js/bootstrap.js"
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import { BootstrapVue } from 'bootstrap-vue'
 
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Make BootstrapVue available throughout your project
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 

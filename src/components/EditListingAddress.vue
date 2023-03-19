@@ -1,7 +1,7 @@
 <template>
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="floatingInput" placeholder="demo" v-model="inputAddress"
-            @keyup="searchProperty" />
+            @keyup="searchProperty"/>
         <ul class="list-group" v-if="searchDropDown">
 
             <li v-for="(r, index ) in result" :key="index"><a class="list-group-item" @click="(select(r, index))">
@@ -36,7 +36,9 @@ export default {
             formBlockTitle1: "Property Address",
             searchDropDown: false,
             result: [],
-            allPropertyData: []
+            getPostalCode : "",
+            allPropertyData: [],
+            selectedProperty: {}
 
         }
     },
@@ -44,7 +46,7 @@ export default {
     methods: {
         searchProperty: async function () {
 
-            if (this.inputAddress === "") {
+            if (this.inputAddress === " ") {
                 this.result = []
                 this.searchDropDown = false
             } else {
@@ -63,19 +65,30 @@ export default {
 
         select: function (r, index) {
             this.inputAddress = this.result[index]
-            let getPostalCode = this.inputAddress.slice(-6)
-            console.log(getPostalCode)
+            this.getPostalCode = this.inputAddress.slice(-6)
             this.searchDropDown = false
+          
 
 
-
-            // this.$emit("updateAddressValue", a)
-            // this.$emit("updateFullAddressData", this.fullAddressData)
 
         },
         closeDropDown: function () {
             this.searchDropDown = false
         }
+
+    },
+    watch: {
+
+        getPostalCode: function(postalCode){
+            for(let a of this.allPropertyData ){
+                if (a.address.postalCode === postalCode)
+                this.selectedProperty = a
+                this.$emit("updateSelectedData", this.selectedProperty)
+                
+            }
+            
+            
+        },
 
     }
 
