@@ -14,7 +14,7 @@
                     :dropDownValues="formBlockArray1" />
                 <EditFormSubTypeBlock :title="formBlockTitle3" v-model="subType" :passedValue="subType"
                     :selectedPropertyType="this.propertyType" @updateSubTypeValue="getSubType" />
-                <FormBlockDrop :title="formBlockTitle4" v-model="tenure" :passed-value="tenure"
+                <FormBlockDrop :title="formBlockTitle4" v-model="tenure" :passedValue="tenure"
                     :dropDownValues="formBlockArray2" />
                 <FormBlockText :title="formBlockTitle5" v-model="wef" :passedValue="wef" />
                 <FormBlockText :title="formBlockTitle6" v-model="top" :passedValue="top" />
@@ -92,10 +92,10 @@
                 <FormBlockText :title="formBlockTitle17" v-model="maintFee" :passedValue="maintFee" />
                 <FormBlockText :title="formBlockTitle18" v-model="headline" :passedValue="headline" />
                 <FormBlockLongText :title="formBlockTitle19" v-model="description" :passedValue="description" />
-                <FormBlockText :title="formBlockTitle20" v-model="picUrl.pic1" />
-                <FormBlockText :title="formBlockTitle21" v-model="picUrl.pic2" />
-                <FormBlockText :title="formBlockTitle22" v-model="picUrl.pic3" />
-                <FormBlockText :title="formBlockTitle23" v-model="picUrl.pic4" />
+                <FormBlockText :title="formBlockTitle20" v-model="picUrl.pic1" :passedValue="picUrl.pic1" />
+                <FormBlockText :title="formBlockTitle21" v-model="picUrl.pic2" :passedValue="picUrl.pic2"/>
+                <FormBlockText :title="formBlockTitle22" v-model="picUrl.pic3" :passedValue="picUrl.pic3"/>
+                <FormBlockText :title="formBlockTitle23" v-model="picUrl.pic4" :passedValue="picUrl.pic4"/>
                 <div class="d-flex justify-content-around mt-4">
                     <button type="button" class="btn btn-danger" style="width:100px" @click="toPage2">Back</button>
                     <button type="button" class="btn btn-danger" style="width:100px"
@@ -105,7 +105,7 @@
             <!-- Modal -->
             <b-modal ref="warningEditModal" hide-footer hide-header centered>
                 <div class="d-block text-center">
-                    <h5>Do you want to edit {{ blockAndStreet }} {{ this.unit }} {{ this.project }} ?</h5>
+                    <h5>Do you want to edit {{ blockAndStreet }} {{ unit }} {{ project }} ?</h5>
                 </div>
                 <div class="d-flex justify-content-around mt-4">
                     <b-button class="mt-2" variant="outline-danger" style="width: 100px" block
@@ -117,7 +117,7 @@
             <!-- Modal -->
             <b-modal ref="confirmEditModal" hide-footer hide-header centered no-close-on-backdrop>
                 <div class="d-block text-center">
-                    <h5>{{ blockAndStreet }} {{ this.unit }} {{ this.project }} is edited successfully.</h5>
+                    <h5>{{ blockAndStreet }} {{ unit }} {{ project }} is edited successfully.</h5>
                 </div>
                 <div class="d-flex justify-content-around mt-4">
                     <b-button class="mt-2" variant="outline-danger" style="width: 100px" block
@@ -143,8 +143,8 @@ import FormBlockLongText from './FormBlockLongText.vue';
 import { BModal } from 'bootstrap-vue'
 import axios from 'axios'
 
-// const deleteListingDataApiUrl = "http://localhost:5000/listing_details/delete/"
-// const updatePropertyListingIdDataApiUrl = "http://localhost:5000/property_details/update/"
+const deleteListingDataApiUrl = "http://localhost:5000/listing_details/delete/"
+const updatePropertyListingIdDataApiUrl = "http://localhost:5000/property_details/update/"
 const updatePropertyApiUrl = "http://localhost:5000/property_details/update/"
 const updateListingApiUrl = "http://localhost:5000/listing_details/update/"
 
@@ -173,8 +173,8 @@ export default {
             formBlockTitle3: "Sub-type",
             formBlockTitle4: "Tenure",
             formBlockTitle5: "With Effect From",
-            formBlockTitle6: "TOP",
-            formBlockTitle7: "Unit",
+            formBlockTitle6: "TOP Year",
+            formBlockTitle7: "Unit No.",
             formBlockTitle8: "Number of Rooms",
             formBlockTitle9: "Listing Type",
             formBlockTitle10: "Sub-type",
@@ -193,14 +193,14 @@ export default {
             formBlockTitle23: "Photo URL",
 
             // dropdown values 
-            formBlockArray1: [" ", "HDB", "Condo", "Landed", "Retail", "Office", "Industrial", "Land"],
-            formBlockArray2: [" ", "30-year", "60-year", "99-year", "103-year", "110-year", "999-year", "9999-year", "Freehold"],
-            formBlockArray3: [" ", "For Sale", "For Rent", "Room Rental"],
-            formBlockArray4: [" ", "Owner Sale", "Mortgagee Sale", "Receiver Sale", "Bank Sale", "Estate Sale", "MCST Sale", "Owner Auction", "Bank Auction"],
-            formBlockArray5: [" ", "Vacant Possession", "Sale with Tenancy", "Sale with/without Tenancy"],
-            formBlockArray6: [" ", "Starting From", "Negotiable", "Indicative Guide Price"],
-            formBlockArray7: [" ", "Yes", "No"],
-            formBlockArray8: [" ", "Studio", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            formBlockArray1: ["", "HDB", "Condo", "Landed", "Retail", "Office", "Industrial", "Land"],
+            formBlockArray2: ["", "30-year", "60-year", "99-year", "103-year", "110-year", "999-year", "9999-year", "Freehold"],
+            formBlockArray3: ["", "For Sale", "For Rent", "Room Rental"],
+            formBlockArray4: ["", "Owner Sale", "Mortgagee Sale", "Receiver Sale", "Bank Sale", "Estate Sale", "MCST Sale", "Owner Auction", "Bank Auction"],
+            formBlockArray5: ["", "Vacant Possession", "Sale with Tenancy", "Sale with/without Tenancy"],
+            formBlockArray6: ["", "Starting From", "Negotiable", "Indicative Guide Price"],
+            formBlockArray7: ["", "Yes", "No"],
+            formBlockArray8: ["", "Studio", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
             // property listing v-model
             propertyId: "",
             blockAndStreet: "",
@@ -236,7 +236,7 @@ export default {
     methods: {
 
         getData: function (data) {
-            console.log(data)
+            // console.log(data)
             this.buttonPage1 = false
             this.blockAndStreet = `${data.address.block} ${data.address.streetName}`
             this.project = data.address.project
@@ -246,11 +246,11 @@ export default {
             this.wef = data.wef
             this.top = data.top
             this.listingData = data.listingDetails
-            console.log(this.listingData)
+            // console.log(this.listingData)
             this.buttonPage1 = true
 
             this.propertyId = data._id
-            console.log(this.propertyId)
+            // console.log(this.propertyId)
 
 
 
@@ -279,7 +279,6 @@ export default {
         selectListingToEdit: function (l, _id) {
             this.deleteButton = _id
             this.editButton = true
-            console.log(l)
             this.unit = l.unit
             this.listingType = l.listingType.type
             this.listingSubType = l.listingType.subType
@@ -294,9 +293,13 @@ export default {
             this.headline = l.description.headline
             this.description = l.description.mainText
             this.listingId = l._id
+            this.picUrl = l.media.photo
 
-            console.log(_id)
-            console.log(this.listingId)
+            // console.log(l.media.photo)
+            // console.log(this.picUrl.pic1)
+
+            // console.log(_id)
+            // console.log(this.listingId)
 
 
 
@@ -305,8 +308,10 @@ export default {
         // delete Listing
         deleteListing: async function () {
             this.hideWarningDeleteModal()
-            // let deleteResult = await axios.delete(`${deleteListingDataApiUrl}${this.listingId}`)
-            // let updateResult = await axios.put(`${updatePropertyListingIdDataApiUrl}${this.propertyId}/${this.listingId}`)
+            let deleteResult = await axios.delete(`${deleteListingDataApiUrl}${this.listingId}`)
+            let updateResult = await axios.put(`${updatePropertyListingIdDataApiUrl}${this.propertyId}/${this.listingId}`)
+            console.log(deleteResult)
+            console.log(updateResult)
             this.showConfirmDeleteModal()
 
             // edit Property & Listing
@@ -316,13 +321,8 @@ export default {
             let propertyData = {
 
                 "address": {
-                    "country": "Singapore",
-                    // "postalCode": this.fullAddressData.postalCode,
-                    // "streetName": this.fullAddressData.roadName,
-                    // "block": this.fullAddressData.block,
                     "project": this.project
                 },
-                // "district": this.fullAddressData.district,
                 "propertyType": {
                     "type": this.propertyType,
                     "subType": this.subType,
@@ -330,8 +330,6 @@ export default {
                 "tenure": this.tenure,
                 "wef": this.wef,
                 "top": this.top,
-                // "coordinates": this.fullAddressData.coordinates,
-
 
             }
             let listingData = {
@@ -412,9 +410,6 @@ export default {
             this.toPage1()
             this.buttonPage1 = false
         },
-
-
-
 
         refreshEditForm: function () {
             this.editFormComponentKey += 1;

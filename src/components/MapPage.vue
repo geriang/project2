@@ -64,7 +64,7 @@
                                                 <span class="badge text-bg-danger"
                                                     style="position: absolute; top: 5px; left: 5px;">{{ s.listingType.type
                                                     }}</span>
-                                                <span class="badge text-bg-success"
+                                                <span class="badge text-bg-success" v-if="!(s.listingType.subType)"
                                                     style="position: absolute; top: 5px; left: 75px;">{{
                                                         s.listingType.subType }}</span>
                                             </div>
