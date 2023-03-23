@@ -11,9 +11,6 @@
         </ul>
         <label for="floatingInput">Property Address</label>
 
-        <!-- <div>{{ result }}</div> -->
-
-
     </div>
 </template>
 
@@ -21,10 +18,10 @@
 <script>
 
 
-import axios from 'axios'
+import axios from 'axios';
 
 
-const getDataApiUrl = "http://localhost:5000/property_details"
+const getDataApiUrl = "http://localhost:5000/property_details";
 
 export default {
 
@@ -39,11 +36,11 @@ export default {
             getPostalCode : "",
             allPropertyData: [],
             selectedProperty: {}
-
         }
     },
 
     methods: {
+
         searchProperty: async function () {
 
             if (this.inputAddress === " ") {
@@ -61,17 +58,13 @@ export default {
                 }
             }
         },
-        // this.searchDropDown = true
 
         select: function (r, index) {
             this.inputAddress = this.result[index]
             this.getPostalCode = this.inputAddress.slice(-6)
             this.searchDropDown = false
-          
-
-
-
         },
+
         closeDropDown: function () {
             this.searchDropDown = false
         }

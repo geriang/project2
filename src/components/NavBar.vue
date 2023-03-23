@@ -45,7 +45,6 @@ export default {
 
         displayMap : function (){
             this.$emit("showNavBarMap", true)
-            console.log("test", true)
             
         },
 

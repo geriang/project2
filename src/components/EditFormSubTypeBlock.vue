@@ -18,12 +18,12 @@
 
 export default {
 
-    components: { },
+    components: {},
 
     data: function () {
         return {
             showSubTypeDropDown: false,
-        
+
             data: [],
             searchQuery: "",
             subType: {
@@ -35,9 +35,9 @@ export default {
                 Industrial: ["Dormitory", "Factory / Workshop (B2)", "Light Industrial (B1)", "Warehouse"],
                 Land: ["Land with Building / En-bloc", "Land Only"]
             },
-       
 
-        }
+
+        };
 
     },
 
@@ -55,58 +55,23 @@ export default {
 
     computed: {
         filteredData: function () {
-
-            // return this.updateData(this.searchResult)       
-            // let searchResult = this.data
             return this.data.filter(d => d.toLowerCase().includes(this.searchQuery.toLowerCase()))
-            // .map((index, d) => ({ d, index })) // add index to each item
-            // .filter(d => this.searchQueryRegex.test(d.index)) // filter by index
-            // .map(d => d.index); // return array of indexes only
-
-            // return searchResult
-
-            // return this.data
-            // .map((d,index) => ({d,index}))
-            // .filter(d => this.searchQuery.toLowerCase(d.index))
-
-
-            // let filtered = this.data.map((d, index) => ({ index }))
-            //     .filter((d) => {
-            //         this.searchQueryRegex.test(d.index)
-
-            //     })
-            // return filtered
-
-            // return this.subType.HDB
-            //     .map((index, d) => ({ d, index })) // add index to each item
-            //     .filter(d => this.searchQueryRegex.test(d.index)) // filter by index
-            //     .map(d => d.index); // return array of indexes only
-
         },
-        // searchQueryRegex() {
-        //     return new RegExp(this.searchQuery, 'i'); // create regular expression for search query
-        // }
 
     },
     watch: {
         selectedPropertyType: function () {
             this.searchQuery = ""
             this.data = []
-       
+
             this.data = this.subType[this.selectedPropertyType]
-  
 
         },
-        passedValue: function(newValue) {
+        passedValue: function (newValue) {
             this.searchQuery = newValue
-        }
-
+        },
     }
-
-
-
-
-}
+};
 
 
 </script>

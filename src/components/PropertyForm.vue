@@ -13,17 +13,18 @@
                         <!-- how to ensure that any changes made to address after selection can be captured in the propertyform -->
                         <FormAddressBlock :title="formBlockTitle2" v-model="addressValue" @updateAddressValue="getAddress"
                             @updateFullAddressData="getFullAddressData" />
-                        <FormBlockDrop :title="formBlockTitle3" v-model="propertyTypeValue"
+                        <FormBlockDrop :title="formBlockTitle3" v-model="propertyTypeValue" :passedValue="propertyTypeValue"
                             :dropDownValues="formBlockArray3" />
                         <FormSubTypeBlock :title="formBlockTitle4" v-model="propertySubTypeValue"
-                            :selectedPropertyType="this.propertyTypeValue" @updateSubTypeValue="getSubType"
-                            @updateRoomNoValue="getRoomValue" />
-                        <FormBlockDrop :title="formBlockTitle11" v-model="tenureValue" :dropDownValues="formBlockArray4" />
-                        <FormBlockText :title="formBlockTitle12" v-model="wefValue" />
-                        <FormBlockText :title="formBlockTitle13" v-model="topValue" />
+                            :passedValue="propertySubTypeValue" :selectedPropertyType="this.propertyTypeValue"
+                            @updateSubTypeValue="getSubType" @updateRoomNoValue="getRoomValue" />
+                        <FormBlockDrop :title="formBlockTitle11" v-model="tenureValue" :dropDownValues="formBlockArray4"
+                            :passedValue="tenureValue" />
+                        <FormBlockText :title="formBlockTitle12" v-model="wefValue" :passedValue="wefValue" />
+                        <FormBlockText :title="formBlockTitle13" v-model="topValue" :passedValue="topValue" />
                         <div class="d-flex justify-content-center mt-4">
-                            <button type="button" class="btn btn-danger" style="width: 100px"
-                                @click="goToPage2">Next</button>
+                            <button type="button" class="btn btn-danger" style="width: 100px" @click="goToPage2"
+                                v-if="showPage1Button">Next</button>
                         </div>
 
                     </div>
@@ -113,7 +114,9 @@ import axios from "axios"
 
 const queryChatGpt = "http://localhost:5000/filldescription"
 const postListingApiUrl = "http://localhost:5000/listing_details/create/"
-const postPropertyApiUrl = "http://localhost:5000/property_details/create"
+const postPropertyApiUrl = "http://localhost:5000/property_details/create/"
+const checkPropertyApiUrl = "http://localhost:5000/property_details/check/"
+const addListingIdApiUrl = "http://localhost:5000/property_details/add/"
 
 
 
@@ -160,6 +163,7 @@ export default {
             tenureValue: "",
             wefValue: "",
             topValue: "",
+            existingPropertyDataId: "",
 
 
             // Listing data
@@ -217,12 +221,20 @@ export default {
 
         // Post Listing Details, retreive listing ID and post Property Details with listing ID
         postData: async function () {
-            this.hideWarningSubmitModal()
-            const getListingId = await this.postListing()
-            // console.log(getListingId)
-            await this.postProperty(getListingId)
 
-            this.showConfirmSubmitModal()
+            if (this.existingPropertyDataId) {
+                console.log("update")
+                this.hideWarningSubmitModal()
+                const getListingId = await this.postListing()
+                await this.postExistingProperty(getListingId)
+                this.showConfirmSubmitModal()
+
+            } else {
+                this.hideWarningSubmitModal()
+                const getListingId = await this.postListing()
+                await this.postProperty(getListingId)
+                this.showConfirmSubmitModal()
+            }
 
 
         },
@@ -267,7 +279,7 @@ export default {
 
         },
 
-        // Post Property Details
+        // Post new Property Details
         postProperty: async function (getListingId) {
             let propertyData = {
 
@@ -297,8 +309,16 @@ export default {
 
             this.$refs.anyName.reset()
 
+        },
 
 
+        postExistingProperty: async function (getListingId) {
+            await axios.put(`${addListingIdApiUrl}${this.existingPropertyDataId}/${getListingId}`)
+            console.log(getListingId)
+            console.log(this.existingPropertyDataId)
+
+
+            this.$refs.anyName.reset()
 
         },
 
@@ -349,9 +369,6 @@ export default {
             this.page3 = true
         }
 
-
-
-
     },
 
     watch: {
@@ -365,6 +382,20 @@ export default {
             this.landPsfValue = value
         },
 
+        fullAddressData: async function (value) {
+            let checkPostalCode = value.postalCode
+            let result = await axios.get(`${checkPropertyApiUrl}${checkPostalCode}`)
+            if (result.data) {
+                this.propertyTypeValue = result.data.propertyType.type
+                this.propertySubTypeValue = result.data.propertyType.subType
+                this.tenureValue = result.data.tenure
+                this.wefValue = result.data.top
+                this.topValue = result.data.wef
+                this.existingPropertyDataId = result.data._id
+            }
+
+        }
+
 
     },
 
@@ -376,8 +407,11 @@ export default {
 
         calculateLandPsf: function () {
             return Math.round(this.priceValue / this.sizeLandValue)
-        }
+        },
 
+        showPage1Button: function () {
+            return this.inputAddress !== ""
+        }
 
     },
 

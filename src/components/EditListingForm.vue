@@ -144,7 +144,7 @@ import { BModal } from 'bootstrap-vue'
 import axios from 'axios'
 
 const deleteListingDataApiUrl = "http://localhost:5000/listing_details/delete/"
-const updatePropertyListingIdDataApiUrl = "http://localhost:5000/property_details/update/"
+// const updatePropertyListingIdDataApiUrl = "http://localhost:5000/property_details/update/"
 const updatePropertyApiUrl = "http://localhost:5000/property_details/update/"
 const updateListingApiUrl = "http://localhost:5000/listing_details/update/"
 
@@ -308,10 +308,8 @@ export default {
         // delete Listing
         deleteListing: async function () {
             this.hideWarningDeleteModal()
-            let deleteResult = await axios.delete(`${deleteListingDataApiUrl}${this.listingId}`)
-            let updateResult = await axios.put(`${updatePropertyListingIdDataApiUrl}${this.propertyId}/${this.listingId}`)
-            console.log(deleteResult)
-            console.log(updateResult)
+            await axios.delete(`${deleteListingDataApiUrl}${this.listingId}`)
+            await axios.put(`${updatePropertyApiUrl}${this.propertyId}/${this.listingId}`)
             this.showConfirmDeleteModal()
 
             // edit Property & Listing
@@ -363,10 +361,8 @@ export default {
 
             }
             this.hideWarningEditModal()
-            let updatePropertyResult = await axios.put(`${updatePropertyApiUrl}${this.propertyId}`, propertyData)
-            let updateListingResult = await axios.put(`${updateListingApiUrl}${this.listingId}`, listingData)
-            console.log(updatePropertyResult)
-            console.log(updateListingResult)
+            await axios.put(`${updatePropertyApiUrl}${this.propertyId}`, propertyData)
+            await axios.put(`${updateListingApiUrl}${this.listingId}`, listingData)
             this.showConfirmEditModal()
         },
 
