@@ -1,13 +1,3 @@
-<!-- npm run serve -->
-<!-- Passing values to parent via props and emit -->
-<!-- https://learnvue.co/tutorials/v-model-guide#using-vue-v-model-in-custom-components -->
-<!-- https://www.youtube.com/watch?v=xtmZVV9QpaA -->
-<!-- https://vuejs.org/guide/essentials/watchers.html#basic-example -->
-<!-- https://stackoverflow.com/questions/68992586/how-to-search-through-the-keys-of-an-object-and-get-the-values-of-matching-keys -->
-<!-- https://www.w3schools.com/jsref/jsref_substring.asp -->
-<!-- https://vue2-leaflet.netlify.app/quickstart/#hello-map -->
-<!-- <a href="https://www.flaticon.com/free-icons/park" title="park icons">Park icons created by ono_tono - Flaticon</a> -->
-<!-- https://stackoverflow.com/questions/41518609/clearing-input-in-vuejs-form -->
 <template>
   <div>
   
