@@ -112,11 +112,11 @@ import FormSubTypeBlock from "@/components/FormSubTypeBlock.vue"
 import { BModal } from 'bootstrap-vue'
 import axios from "axios"
 
-const queryChatGpt = "http://localhost:5000/filldescription"
-const postListingApiUrl = "http://localhost:5000/listing_details/create/"
-const postPropertyApiUrl = "http://localhost:5000/property_details/create/"
-const checkPropertyApiUrl = "http://localhost:5000/property_details/check/"
-const addListingIdApiUrl = "http://localhost:5000/property_details/add/"
+const queryChatGpt = `${process.env.VUE_APP_DEV_SERVER}/filldescription`
+const postListingApiUrl = `${process.env.VUE_APP_DEV_SERVER}/listing_details/create/`
+const postPropertyApiUrl = `${process.env.VUE_APP_DEV_SERVER}/property_details/create/`
+const checkPropertyApiUrl = `${process.env.VUE_APP_DEV_SERVER}/property_details/check/`
+const addListingIdApiUrl = `${process.env.VUE_APP_DEV_SERVER}/property_details/add/`
 
 
 
@@ -348,6 +348,7 @@ export default {
 
         hideConfirmSubmitModal: function () {
             this.$refs['confirmSubmitModal'].hide()
+            window.location.reload();
 
         },
 

@@ -20,7 +20,7 @@
 import axios from "axios"
 
 
-const baseApiUrl = "https://developers.onemap.sg/commonapi/search?searchVal=";
+const baseApiUrl = "https://www.onemap.gov.sg/api/common/elastic/search?searchVal=";
 
 export default {
 
@@ -91,7 +91,7 @@ export default {
                     // do a conditional statement to filter out no address found in onemap
                     // rendering list more than once... need to check 
                     let data = list[i].ADDRESS;
-                    // let rawCoordinates = [list[i].LATITUDE, list[i].LONGTITUDE]
+                    // let rawCoordinates = [list[i].LATITUDE, list[i].LONGITUDE]
                     let dataLowerCaps = data.toLowerCase();
                     let dataString = dataLowerCaps.split(" ");
                     for (let i = 0; i < dataString.length; i++) {
@@ -142,7 +142,7 @@ export default {
             // Postal Code
             this.fullAddressData.postalCode = response.data.results[0].POSTAL
             // Coordinates
-            this.fullAddressData.coordinates = [response.data.results[0].LATITUDE, response.data.results[0].LONGTITUDE]
+            this.fullAddressData.coordinates = [response.data.results[0].LATITUDE, response.data.results[0].LONGITUDE]
             // District
             let firstTwoDigit = this.fullAddressData.postalCode.substring(0, 2)
             for (let [key, i] of Object.entries(this.districtTable)) {
