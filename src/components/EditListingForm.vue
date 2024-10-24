@@ -143,14 +143,11 @@ import FormBlockLongText from './FormBlockLongText.vue';
 import { BModal } from 'bootstrap-vue'
 import axios from 'axios'
 
-const deleteListingDataApiUrl = "http://localhost:5000/listing_details/delete/"
-// const updatePropertyListingIdDataApiUrl = "http://localhost:5000/property_details/update/"
-const updatePropertyApiUrl = "http://localhost:5000/property_details/update/"
-const updateListingApiUrl = "http://localhost:5000/listing_details/update/"
+const deleteListingDataApiUrl = `${process.env.VUE_APP_DEV_SERVER}/listing_details/delete/`
+const updatePropertyApiUrl = `${process.env.VUE_APP_DEV_SERVER}/property_details/update/`
+const updateListingApiUrl = `${process.env.VUE_APP_DEV_SERVER}/listing_details/update/`
 
 
-
-// const getDataApiUrl = "http://localhost:5000/property_details"
 
 export default {
 

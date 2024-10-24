@@ -375,7 +375,7 @@ import * as bootstrap from 'bootstrap';
 import { BModal } from 'bootstrap-vue'
 
 
-const getDataApiUrl = "http://localhost:5000/property_details"
+const getDataApiUrl = `${process.env.VUE_APP_DEV_SERVER}/property_details`
 
 
 export default {
