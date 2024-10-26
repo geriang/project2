@@ -4,8 +4,5 @@ require('dotenv').config()
 
 
 module.exports = defineConfig({
-  transpileDependencies: true,
-//   devServer: {
-//     proxy: 'https://vueback.gach.work'
-// }
+  transpileDependencies: true
 })

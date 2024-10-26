@@ -430,7 +430,7 @@ export default {
         let propertyDetails = []
         let response = await axios.get(getDataApiUrl, {
                                                         withCredentials: true,
-                                                        headers: {'Content-Type': 'application/json',}
+                                                        // headers: {'Content-Type': 'application/json',}
                                                         })
         let data = response.data
         // console.log(data)
