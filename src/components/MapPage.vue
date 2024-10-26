@@ -428,7 +428,9 @@ export default {
     async created() {
 
         let propertyDetails = []
-        let response = await axios.get(getDataApiUrl)
+        let response = await axios.get(getDataApiUrl, {
+                                                        withCredentials: true
+                                                        })
         let data = response.data
         // console.log(data)
         for (let d of data) {
